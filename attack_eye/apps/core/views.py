@@ -1,6 +1,7 @@
 # from django.template import loader
 # from django.template.loader import get_template
 from django.template import Template, Context
+from ..Celery.tasks import amass
 from ..nmap.nmap import parse_nmap_xml_report
 from django.shortcuts import render, redirect
 import json
@@ -30,9 +31,9 @@ from core.models import scan
 # from attackeye.models import Domain
 from core.serializers import scanSerializer
 from rest_framework.decorators import api_view
-from celery import Celery
+# from celery import Celery
 import subprocess
-from .tasks import amass
+# from .tasks import amass
 from django.http import FileResponse
 from django.contrib import messages
 import logging
@@ -148,7 +149,7 @@ def download_csv(request, graphname):
     # logging.info(attackeye.description)
     # domain = attackeye.description
     # logging.info(str(domain))
-    print("hamza", graphname)
+    # print("hamza", graphname)
     subprocess.call(
         [
             "bash",
@@ -184,6 +185,8 @@ def attackeye_list(request):
 
     elif request.method == "POST":
         domain = request.data["domain"]
+       
+        
 
         extSubdomain = tldextract.extract(domain).subdomain
         extDomain = (
@@ -191,7 +194,8 @@ def attackeye_list(request):
         )
 
         isValidDomain = validators.domain(extDomain)
-
+        
+        
         try:
             domainStatusCode = requests.get(
                 f"http://{extDomain}", headers={"User-Agent": "Mozilla/5.0"}
@@ -261,7 +265,7 @@ def attackeye_list(request):
                 return Response({"requestData": request.data, "domain": extDomain})
 
             attackeye = scan.objects.create(UserId=user, domain=extDomain, pending=0)
-
+            
             amass.delay(str(extDomain), str(user))
 
             return Response({"response": request.data})

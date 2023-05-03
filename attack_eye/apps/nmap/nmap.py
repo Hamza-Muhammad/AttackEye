@@ -6,7 +6,7 @@ from django.conf import settings
 
 def generate_xml_report(file_name):
     subprocess.call(
-        f"nmap -A -T5 --privilege --min-hostgroup 256 --host-timeout 30m --min-parallelism 100 -iL {settings.SITE_ROOT}/attack_eye/apps/amass/generated_subdomains/{file_name}.txt -oX {settings.SITE_ROOT}/attack_eye/apps/nmap/port_scanning_reports/{file_name}.xml", shell=True,)
+        f"nmap -A -T5 --privilege --min-hostgroup 256 --min-parallelism 100 -iL {settings.SITE_ROOT}/attack_eye/apps/amass/generated_subdomains/{file_name}.txt -oX {settings.SITE_ROOT}/attack_eye/apps/nmap/port_scanning_reports/{file_name}.xml", shell=True,)
 
 
 def parse_nmap_xml_report(xml_file_name: str, host_name: str):

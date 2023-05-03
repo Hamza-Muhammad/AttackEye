@@ -1,0 +1,203 @@
+{
+  "edges": [
+    {
+      "key": "0",
+      "source": "0",
+      "target": "6",
+      "edgeTitle": "ns_record",
+      "attributes": {
+        "size": 1
+      }
+    },
+    {
+      "key": "1",
+      "source": "0",
+      "target": "2",
+      "edgeTitle": "ns_record",
+      "attributes": {
+        "size": 1
+      }
+    },
+    {
+      "key": "2",
+      "source": "0",
+      "target": "3",
+      "edgeTitle": "mx_record",
+      "attributes": {
+        "size": 1
+      }
+    },
+    {
+      "key": "3",
+      "source": "0",
+      "target": "4",
+      "edgeTitle": "mx_record",
+      "attributes": {
+        "size": 1
+      }
+    },
+    {
+      "key": "4",
+      "source": "0",
+      "target": "1",
+      "edgeTitle": "mx_record",
+      "attributes": {
+        "size": 1
+      }
+    },
+    {
+      "key": "5",
+      "source": "0",
+      "target": "0",
+      "edgeTitle": "root",
+      "attributes": {
+        "size": 1
+      }
+    },
+    {
+      "key": "6",
+      "source": "1",
+      "target": "5",
+      "edgeTitle": "root",
+      "attributes": {
+        "size": 1
+      }
+    },
+    {
+      "key": "7",
+      "source": "2",
+      "target": "0",
+      "edgeTitle": "root",
+      "attributes": {
+        "size": 1
+      }
+    },
+    {
+      "key": "8",
+      "source": "3",
+      "target": "0",
+      "edgeTitle": "root",
+      "attributes": {
+        "size": 1
+      }
+    },
+    {
+      "key": "9",
+      "source": "4",
+      "target": "0",
+      "edgeTitle": "root",
+      "attributes": {
+        "size": 1
+      }
+    },
+    {
+      "key": "10",
+      "source": "6",
+      "target": "0",
+      "edgeTitle": "root",
+      "attributes": {
+        "size": 1
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "key": "0",
+      "attributes": {
+        "x": -0,
+        "y": 0,
+        "label": "canterbury.ac.nz",
+        "pointTitle": "domain: canterbury.ac.nz",
+        "color": "#EDE4C7",
+        "category": "domain",
+        "type": "border",
+        "source": "DNS",
+        "size": 15
+      }
+    },
+    {
+      "key": "1",
+      "attributes": {
+        "x": 1.709065709001433,
+        "y": -1.3173851802893803,
+        "label": "canterbury-ac-nz.mail.protection.outlook.com",
+        "pointTitle": "mx: canterbury-ac-nz.mail.protection.outlook.com",
+        "color": "#F7727B",
+        "category": "mx",
+        "type": "border",
+        "source": "DNS",
+        "size": 15
+      }
+    },
+    {
+      "key": "2",
+      "attributes": {
+        "x": -2.51816708282744,
+        "y": 2.960707473323228,
+        "label": "dns1.canterbury.ac.nz",
+        "pointTitle": "ns: dns1.canterbury.ac.nz",
+        "color": "#E36414",
+        "category": "ns",
+        "type": "border",
+        "source": "DNS",
+        "size": 15
+      }
+    },
+    {
+      "key": "3",
+      "attributes": {
+        "x": 5.5259441122918105,
+        "y": -4.940078505872195,
+        "label": "mx2.canterbury.ac.nz",
+        "pointTitle": "mx: mx2.canterbury.ac.nz",
+        "color": "#F7727B",
+        "category": "mx",
+        "type": "border",
+        "source": "DNS",
+        "size": 15
+      }
+    },
+    {
+      "key": "4",
+      "attributes": {
+        "x": -6.005388785511135,
+        "y": 6.778780383906192,
+        "label": "mx1.canterbury.ac.nz",
+        "pointTitle": "mx: mx1.canterbury.ac.nz",
+        "color": "#F7727B",
+        "category": "mx",
+        "type": "border",
+        "source": "DNS",
+        "size": 15
+      }
+    },
+    {
+      "key": "5",
+      "attributes": {
+        "x": 8.533748205276693,
+        "y": -7.505328897790191,
+        "label": "outlook.com",
+        "pointTitle": "domain: outlook.com",
+        "color": "#EDE4C7",
+        "category": "domain",
+        "type": "border",
+        "source": "DNS",
+        "size": 15
+      }
+    },
+    {
+      "key": "6",
+      "attributes": {
+        "x": -8.92351934811915,
+        "y": 11.636382236027968,
+        "label": "dns2.canterbury.ac.nz",
+        "pointTitle": "ns: dns2.canterbury.ac.nz",
+        "color": "#E36414",
+        "category": "ns",
+        "type": "border",
+        "source": "DNS",
+        "size": 15
+      }
+    }
+  ]
+}

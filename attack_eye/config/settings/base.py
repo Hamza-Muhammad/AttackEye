@@ -64,8 +64,9 @@ INSTALLED_APPS = [
     "corsheaders",
     "apps.core",
     "apps.amass",
-    "apps.nmap"
-]
+    "apps.nmap",
+    "apps.Celery"
+    ]
 
 MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -111,7 +112,7 @@ TEMPLATES = [
 ]
 
 CELERY_BROKER_URL = "amqp://localhost"
-CELERY_IMPORTS = ("apps.core.tasks",)
+CELERY_IMPORTS = ("apps.Celery.tasks",)
 
 WSGI_APPLICATION = "config.wsgi.application"
 
