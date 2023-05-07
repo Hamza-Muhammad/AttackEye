@@ -55,7 +55,7 @@ form.onsubmit = function () {
     const csrftoken = this.querySelector("[name=csrfmiddlewaretoken]").value;
     axios
       .post(
-        "/api/attackeye",
+        "/portscan",
         {
           domain: domain,
         },
@@ -69,20 +69,7 @@ form.onsubmit = function () {
       .then(function (response) {
         domainInput.value = "";
         if (response.data.error) {
-          if (response.data.message == "Subdomains are not allowed") {
-            toolOverlay.querySelector("h4").innerHTML = response.data.message;
-            toolOverlay.querySelector("p").innerHTML =
-              response.data.messageDescription;
-            toolOverlay.querySelectorAll("button")[0].innerHTML =
-              "Proceed scanning (" + response.data.domain + ")";
-            // proceed scanning button
-            toolOverlay.querySelectorAll("button")[0].onclick = () => {
-              startScan(response.data.domain);
-              populateOverallOverview();
-              scanFormContainer.removeChild(toolOverlayContainer);
-            };
-            scanFormContainer.appendChild(toolOverlay.querySelector("div"));
-          } else if (response.data.message == "Invalid Domain") {
+          if (response.data.message == "Invalid Domain") {
             toolTip.innerHTML = "<span>!</span>" + response.data.message;
             domainInput.parentNode.appendChild(toolTip);
 
@@ -188,7 +175,6 @@ function populateOverallOverview(domain) {
 
     // addCell(headerRow, 'Amount');
     var item = response.data.graph;
-    console.log('this is item')
     console.log(item);
     // insert data
     item.forEach(function (result) {
@@ -265,25 +251,25 @@ function populateOverallOverview(domain) {
         result.pending == 1
       ) {
         clearInterval(checkDomainStatus);
-        axios.post(
-          "/api/generatenmapxmlreport",
-          { domain: domain },
-          {
-            headers: {
-              "X-CSRFToken": getCSRFToken(),
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        // axios.post(
+        //   "/api/generatenmapxmlreport",
+        //   { domain: domain },
+        //   {
+        //     headers: {
+        //       "X-CSRFToken": getCSRFToken(),
+        //       "Content-Type": "application/json",
+        //     },
+        //   }
+        // );
         console.log("cleared");
       }
     });
   };
   if (!domain) {
-    return axios.get("/api/graphtable").then(axiosCall);
+    return axios.get("/portscan/graphtables").then(axiosCall);
   }
   var checkDomainStatus = setInterval(function () {
-    axios.get("/api/graphtable").then(axiosCall);
+    axios.get("/portscan/graphtables").then(axiosCall);
   }, 2000);
 }
 

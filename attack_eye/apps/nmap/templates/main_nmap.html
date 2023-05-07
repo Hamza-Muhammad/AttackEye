@@ -1,0 +1,479 @@
+{% extends "./base.html" %}
+{% load static %}
+{% load split %}
+
+{% block content %}
+
+<style type="text/css">
+  @keyframes ScaleInOut {
+    0% {
+        transform: scale(0.6);
+    }
+    100% {
+        transform: scale(1.2);
+    }
+}
+.dot1, .dot2,.dot3{
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    animation: ScaleInOut 0.6s ease-in-out 0.2s infinite alternate;
+}
+.dot2 {
+    animation-delay: 0.4s;
+}
+.dot3 {
+    animation-delay: 0.6s
+}
+.spinner {
+  position: absolute;
+  background-color: #000000e6;
+  bottom: 0;
+  top: 0;
+  right: -160px;
+  left: 0;
+  padding-top: 5px;
+}
+.login-out {
+  border: 1px solid #ffffff;
+  padding: 0.5em 1em;
+}
+</style>
+
+  <!-- Navbar  -->
+  {% include 'navbar.html' %}
+
+    <div class="container" id="fluid1">
+      <div class="row">
+        <div class="col" id="fluid2" style="margin-top: 5%;" data-aos="fade-right">
+          <h1 class="topcontent1">
+            PORT SCANNING
+          </h1>
+          <h5 class="ml11">
+            <span class="text-wrapper">
+              <span class="line line1"></span>
+              <span class="letters">Start a full scan in minutes with power full cloud baised
+                tool, plus flexible reporting, automation and collaboration
+                options. Thousands of team across the world deliver successful
+                engagement faster with the ATTACKEYE.com</span>
+            </span>
+          </h5>
+
+          {% if userLoggedIn %}
+          <a href="#tool2" class="btn btn-light" id="topb">
+            START PORT SCANNING
+          </a>
+          {% endif %}
+        </div>
+        <div class="col" data-aos="fadeInUp">
+          <div class="containe-fluid" id="fluid3">
+            <img src="/static/img/hero.gif" loading="async" alt="" class="img-fluid" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="container-fluid" id="secondpart">
+      <div class="container-lg" id="secondpart1">
+
+        <h1 class="writing" data-aos="fadeInUp">BENEFITS</h1>
+        <h5 class="writing1" data-aos="fadeInUp">WHO WE BUILT THIS WEBSITE FOR?</h5>
+
+
+        <div class="card" data-aos="fade-right">
+          <img src="/static/img/team.png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h4>SECURITY TEAM</h4>
+            <p class="card-text">
+              Team enforces team-wide and organiztionwide two-factor
+              authentication, single sign-on through Active Directory, and
+              encryption of data in tansit and at rest.
+            </p>
+          </div>
+        </div>
+        <div class="card" data-aos="fade-up">
+          <img src="/static/img/bug.png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h4>BUG BOUNTY HUNTERS</h4>
+            <p class="card-text">
+              A process where hacking compaies or hackers act as "middle-men"
+              to detect bugs in software and address cyber vulnerabilities
+              that organization are facing.
+            </p>
+          </div>
+        </div>
+        <div class="card" data-aos="fade-left">
+          <img src="/static/img/testing.png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h4>PENTESTERS</h4>
+            <p class="card-text">
+              Peneteration testors perform simulated cyberattacks. This help
+              identify security vulnerabilities and weaknesses before
+              malicious hackers have the chance to exploit them.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    {% if userLoggedIn %}
+    <div class="container-fluid" id="tool">
+      <div class="container">
+        <div class="row" id="discover1">
+          <div class="col-lg-4">
+            <div id="tool1" data-aos="fade-right">
+              <img src="/static/img/world.png" alt="..." class="img-fluid" />
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div id="tool2" style="padding-top: 0;">
+              <h2 class="dwriting" data-aos="fadeInUp" style="margin-top: 0;">PORT SCANNING</h2>
+              <p class="dwriting" data-aos="fadeInUp">
+                Information gathering for planning a penetertion test and asessing
+                How much work it might involved. We provide powerful reconnaissance
+                Tools to help you with that. Use them to quickly discover the attack
+                Surface of an organization, passively scan for vulnerabilities, and
+                Find interesting targets.
+              </p>
+
+              <form class="row g-0" id="dform" data-aos="fadeInUp">
+                {% csrf_token %}
+                <div class="col-sm-10" style="position: relative; text-align: center;">
+                  <div class="spinner justify-content-center" style="display: none !important;">
+                    <span class="dot1 bg-light rounded-circle m-2"></span>
+                    <span class="dot2 bg-light rounded-circle m-2"></span>
+                    <span class="dot3 bg-light rounded-circle m-2"></span>
+                  </div>
+                  <input class="form-control" id="domain" type="text" name="domain" placeholder="example.com" itemid="dinput">
+                </div>
+                <div class="col-sm-2">
+                  <button type="submit" class="btn btn-light" id="discover">
+                    DISCOVER
+                  </button>
+                </div>
+              </form>
+              <div class="col-md-12 mt-3">
+                <table class="table table-striped" style="font-size:15px; margin-bottom: 0px;">
+                  <thead id="tablehead" style="color: #ffffff;">
+                    <tr id="headertab">
+                      <td>Domain</td><td>Time Start</td><td>Time End</td><td>Status</td>
+                    </tr>
+                  </thead>
+                </table>
+                <table id="firstTabOverall" class="table table-striped" style="font-size:15px;">
+                  <script type="text/javascript">
+                    var currentDomain = [];
+                  </script>
+                  {% for graph in graph_list %}
+                  <tr {% if graph.pending == 0 %}style="background-color: #008b8b;"{% endif %}>
+                    <td>{{ graph.domain }}</td>
+                    <td>{{ graph.timeDateStart|date:"Y-m-d H:i:s" }}</td>
+                    {% if graph.pending == 0 %}
+                    <td>-</td>
+                    <td><span style="margin-right: 5px;">Scanning</span><span class="spinner justify-content-center" style="position: unset; background-color: unset; padding-top: 0;"><span style="display: table-cell;" class="dot1 bg-light rounded-circle m-2"></span><span style="display: table-cell;" class="dot2 bg-light rounded-circle m-2"></span><span style="display: table-cell;" class="dot3 bg-light rounded-circle m-2"></span></span></td>
+                    {% else %}
+                    <td>{{ graph.timeDateEnd|split:"."|first }}</td>
+                    <td style="padding-right: 0;">
+                      <button id="{{ graph.domain }}" onclick="viewgraph(this)">View Report</button>
+                      <button id="{{ graph.id }}" data-domain="{{ graph.domain }}" onclick="deletedomain(this)">Delete</button>
+                    </td>
+                    {% endif %}
+                  </tr>
+                    {% if graph.pending == 0 %}
+                    <script type="text/javascript">
+                      currentDomain.push('{{ graph.domain }}');
+                    </script>
+                    {% endif %}
+                  {% endfor %}
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="container" id="price">
+        <div class="row justify-content-center text-center">
+          <div class="col-lg-12">
+            <h1 class="pw" data-aos="fade-up">PRICING PLAN</h1>
+            <h6 class="pw1" data-aos="fade-up">
+              GET INSTANT ACCESS TO THE FULL CAPABILITIES OF ATTACKEYE.COM
+            </h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4" data-aos="fade-up">
+            <div class="bg-white mt-3 price-box" id="price1">
+              <div class="pricing-name text-center">
+                <h4 class="mb-0">BASIC</h4>
+              </div>
+              <div class="plan-price text-center mt-4">
+                <h1 class="text-custom font-weight-normal mb-0">
+                  $9<span>/Month</span>
+                </h1>
+              </div>
+              <div class="price-features mt-5">
+                <p><i class="mdi mdi-check"></i> ALL TOOLS</p>
+                <p><i class="mdi mdi-check"></i> UP TO 10 TARGETS</p>
+                <p><i class="mdi mdi-check"></i> AUTHENTICATION</p>
+                <p><i class="mdi mdi-check"></i> AUTOMATION</p>
+                <p><i class="mdi mdi-check"></i> SMALL BUSINESS SCOPE</p>
+              </div>
+              <div class="text-center mt-5">
+                <a href="#" class="btn btn-custom text-white" id="pb">BUY NOW</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4" data-aos="fade-up">
+            <div class="bg-white mt-3 price-box" id="price1">
+              <div class="pricing-name text-center">
+                <h4 class="mb-0">ADVANCE</h4>
+              </div>
+              <div class="plan-price text-center mt-4">
+                <h1 class="text-custom font-weight-normal mb-0">
+                  $19<span>/Month</span>
+                </h1>
+              </div>
+              <div class="price-features mt-5">
+                <p><i class="mdi mdi-check"></i> SECURITY MONITORING</p>
+                <p><i class="mdi mdi-check"></i> UP TO 100 TARGETS</p>
+                <p><i class="mdi mdi-check"></i> ADVANCE AUTHENTICATION</p>
+                <p><i class="mdi mdi-check"></i> REPORTING</p>
+                <p><i class="mdi mdi-check"></i> MEDIUM BUSINESS SCOPE</p>
+              </div>
+              <div class="text-center mt-5">
+                <a href="#" class="btn btn-custom text-white" id="pb">BUY NOW</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4" data-aos="fade-up">
+            <div class="bg-white mt-3 price-box" id="price1">
+              <div class="pricing-name text-center">
+                <h4 class="mb-0">PREMIUM</h4>
+              </div>
+              <div class="plan-price text-center mt-4">
+                <h1 class="text-custom font-weight-normal mb-0">
+                  $29<span>/Month</span>
+                </h1>
+              </div>
+              <div class="price-features mt-5">
+                <p><i class="mdi mdi-check"></i> PREMIUM SUPPORT</p>
+                <p><i class="mdi mdi-check"></i> UP TO 1000 TARGETS</p>
+                <p><i class="mdi mdi-check"></i> AUTHENTICATION</p>
+                <p><i class="mdi mdi-check"></i> MULTI USERS</p>
+                <p><i class="mdi mdi-check"></i> LARGE BUSINESS SCOPE</p>
+              </div>
+              <div class="text-center mt-5" id="pb">
+                <a href="#" class="btn btn-custom text-white">BUY NOW</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="container-lg" id="fbmain1">
+    <div class="content" id="fbmain">
+      <h1 class="fb3" data-aos="fadeInUp">FEEDBACK</h1>
+      <div class="container" id="fb2">
+        <div class="row justify-content-center">
+          <div class="col-md-10">
+
+            <div class="row justify-content-center" data-aos="fadeInUp">
+              <div class="col-md-6">
+
+                <h3 class="heading mb-4" data-aos="fadeInUp">Let's talk about everything!</h3>
+                <p data-aos="fadeInUp">SEND US A MESSAGE WHAT YOU THINK ABOUT OUR PRODUCT.</p>
+
+                <p><img src="/static/img/hacker.png" alt="IMAGE" class="img-fluid" data-aos="fadeInUp"></p>
+
+              </div>
+              <div class="col-md-6">
+
+                <form class="mb-5" method="post" id="contactForm" name="contactForm">
+                  <div class="row" data-aos="fadeInUp">
+                    <div class="col-md-12 form-group">
+                      <input type="text" class="form-control" name="name" id="name" placeholder="Your name">
+                    </div>
+                  </div>
+                  <div class="row" id="fb1" data-aos="fadeInUp">
+                    <div class="col-md-12 form-group">
+                      <input type="text" class="form-control" name="email" id="email" placeholder="Email">
+                    </div>
+                  </div>
+                  <div class="row" id="fb1" data-aos="fadeInUp">
+                    <div class="col-md-12 form-group">
+                      <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject">
+                    </div>
+                  </div>
+                  <div class="row" id="fb1" data-aos="fadeInUp">
+                    <div class="col-md-12 form-group">
+                      <textarea class="form-control" name="message" id="message" cols="30" rows="7"
+                        placeholder="Write your message"></textarea>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <input type="submit" value="Send Message" data-aos="fade-up"
+                        class="btn btn-primary rounded-0 py-2 px-4" id="fb">
+                      <span class="submitting"></span>
+                    </div>
+                  </div>
+                </form>
+
+                <div id="form-message-warning mt-4"></div>
+                <div id="form-message-success">
+                  <!-- Your message was sent, thank you! -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer" >
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-md-6"  data-aos="fade-right">
+          <h6>ABOUT NCCS</h6>
+          <p class="text-justify">THE EASTABLISHMENT OF NATIONAL CENTE FOR CYBER SECURITY (NCCS) HAS BEEN COMMENCED BY
+            GOVERNMENT OF PAKISTAN IN JUNE 2018. THE NCCS PROJECT IS A JOINT INITIATIVE OF HIGHER EDUCATION
+            COMMISSION(HEC) AND PLANNING COMMISSION.</p>
+        </div>
+
+        <div class="col-xs-6 col-md-3"  data-aos="fade-right">
+          <h6>MORE LINKS</h6>
+          <ul class="footer-links">
+            <li><a href="http://scanfcode.com/category/c-language/">PRICING CALCULATOR</a></li>
+            <li><a href="http://scanfcode.com/category/front-end-development/">BOOK A DEMO</a></li>
+            <li><a href="http://scanfcode.com/category/back-end-development/">REQUEST A QUOTE</a></li>
+
+          </ul>
+        </div>
+
+        <div class="col-xs-6 col-md-3"  data-aos="fade-right">
+          <h6>COMPANY</h6>
+          <ul class="footer-links">
+            <li><a href="http://scanfcode.com/about/">TERM OF USE</a></li>
+            <li><a href="http://scanfcode.com/contact/">PRIVACY POLICY</a></li>
+            <li><a href="http://scanfcode.com/contribute-at-scanfcode/">MAIN WEBSITE</a></li>
+
+          </ul>
+        </div>
+      </div>
+      <hr>
+    </div>
+    <div class="container"  >
+      <div class="row">
+        <div class="col-md-8 col-sm-6 col-xs-12">
+          <p class="copyright-text">Copyright &copy; 2022 All Rights Reserved by
+            <a href="#">NCCS</a>.
+          </p>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12" >
+          <ul class="social-icons">
+            <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+            <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a class="dribbble" href="#"><i class="fa fa-instagram"></i></a></li>
+            <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- <script>
+    function reveal() {
+      var reveals = document.querySelectorAll(".reveal");
+
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        var elementVisible = 150;
+
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add("active");
+        } else {
+          reveals[i].classList.remove("active");
+        }
+      }
+    }
+    window.addEventListener("scroll", reveal);
+  </script> -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+  <script>
+    var textWrapper = document.querySelector(".ml11 .letters");
+    textWrapper.innerHTML = textWrapper.textContent.replace(
+      /([^\x00-\x80]|\w)/g,
+      "<span class='letter'>$&</span>"
+    );
+
+    anime
+      .timeline({ loop: true })
+      .add({
+        targets: ".ml11 .line",
+        scaleY: [0, 1],
+        opacity: [0.5, 1],
+        easing: "easeOutExpo",
+        duration: 700,
+      })
+      .add({
+        targets: ".ml11 .line",
+        translateX: [
+          0,
+          document.querySelector(".ml11 .letters").getBoundingClientRect()
+            .width + 10,
+        ],
+        easing: "easeOutExpo",
+        duration: 700,
+        delay: 100,
+      })
+      .add({
+        targets: ".ml11 .letter",
+        opacity: [0, 1],
+        easing: "easeOutExpo",
+        duration: 4000,
+        offset: "-=775",
+        delay: (el, i) => 34 * (i + 1),
+      })
+      .add({
+        targets: ".ml11",
+        opacity: 0,
+        duration: 1000,
+        easing: "easeOutExpo",
+        delay: 1000,
+      });
+  </script>
+  
+  <script src="{% static 'js/main_nmap.js' %}"></script>
+  
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init(
+      {
+        offset: 150,
+        duration: 1500,
+      }
+    );
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    (typeof currentDomain != 'undefined' && currentDomain.length > 0) && populateOverallOverview(currentDomain);
+
+    // navbar on mobile background fix
+    var mbNav = document.querySelector('.navbar-toggler');
+    mbNav.addEventListener('click', function() {
+      document.querySelector('#navbarNav').className += ' blur-b shadow';
+    });
+  </script>
+
+{% endblock %}
