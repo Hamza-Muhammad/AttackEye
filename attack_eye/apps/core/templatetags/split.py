@@ -9,3 +9,7 @@ def split(splitable, split_at):
     
     # normal split without max limitation
     return splitable.split(split_at)
+
+@register.filter(name='get_type')
+def get_type(value):
+    return type(value).__name__

@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 example.com
+=======
+www.example.com
+example.com
+>>>>>>> 145436f19f9339f0308cc90a6a1abaa6d88a2748

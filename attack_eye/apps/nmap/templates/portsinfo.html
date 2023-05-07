@@ -1,6 +1,6 @@
 {% extends "./base.html" %}
 {% load static %}
-
+{% load split %}
 {% block content %}
 <style>
     #begining {
@@ -63,6 +63,7 @@
 </style>
 
 <div class="container-fluid" id="begining">
+    {% if report|get_type == 'dict' %}
     <div class="container-lg" id="begining1" data-aos="fade-up">
         <h1 id="head">Target</h1>
         <p>
@@ -147,13 +148,17 @@
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ hop.ipaddr|default:"N/A" }}</td>
                     <td>{{ hop.host|default:"N/A" }}</td>
-                    <td>{{ hop.rtt|default:"N/A" }}</td>
+                    <td>{{ hop.rtt|default:"N/A" }} ms</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+    {% else %}
+    <pre>{{ report }}</pre>
+    {% endif %}
+    
 
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>

@@ -28,11 +28,11 @@ def parse_nmap_xml_report(xml_file_name: str, host_name: str):
                 return host.find('os').findall('portused')[1].attrib if len(host.find('os').findall('portused')) > 1 else None
 
             report = {"host": host.find('hostnames').find('hostname').attrib['name'], "address": host.find('address').attrib['addr'], "filtered_ports": host.find('ports').findall('extraports')[0].attrib['count'], "closed_ports": closedPorts(), "open_ports": [{"protocol": port.attrib['protocol'], "port_id": port.attrib['portid'], "state": port.find('state').attrib['state'], "services": port.find(
-                'service').attrib, "cpe": CPE(port)} for port in host.find('ports').findall('port')], "open_port_used_os": host.find('os').find('portused').attrib, "closed_port_used_os": closedPortUsedOs(), "os_detail": [{"os_match": os.attrib, "os_class": os.find('osclass').attrib, "cpe": os.find('osclass').find('cpe').text} for os in host.find('os').findall('osmatch')], "trace_route_port": host.find('trace').attrib, "hops": [hop.attrib for hop in host.find('trace').findall('hop')]}
+                'service').attrib, "cpe": CPE(port)} for port in host.find('ports').findall('port')], "open_port_used_os": host.find('os').find('portused').attrib if host.find('os').find('portused') is not None else None, "closed_port_used_os": closedPortUsedOs(), "os_detail": [{"os_match": os.attrib, "os_class": os.find('osclass').attrib, "cpe": os.find('osclass').find('cpe').text if os.find('osclass').find('cpe') is not None else None} for os in host.find('os').findall('osmatch')], "trace_route_port": host.find('trace').attrib, "hops": [hop.attrib for hop in host.find('trace').findall('hop')]}
 
             return report
 
-    return f'No host with name {host_name}'
+    return f"We were not able to find any information about {host_name} \n It is possible that {host_name} is offline"
 
 
 # print(parse_nmap_xml_report('testscan', 'example.com'))
