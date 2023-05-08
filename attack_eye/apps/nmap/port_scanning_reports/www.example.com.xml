@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Sun May  7 20:05:57 2023 as: nmap -T5 -sS -sV -O -&#45;privilege -&#45;min-hostgroup 128 -&#45;top-ports 100 -&#45;traceroute -&#45;min-parallelism 100 -oX /home/sam/copy-Attack-Eye/attack_eye/apps/nmap/port_scanning_reports/www.example.com.xml www.example.com -->
+<nmaprun scanner="nmap" args="nmap -T5 -sS -sV -O -&#45;privilege -&#45;min-hostgroup 128 -&#45;top-ports 100 -&#45;traceroute -&#45;min-parallelism 100 -oX /home/sam/copy-Attack-Eye/attack_eye/apps/nmap/port_scanning_reports/www.example.com.xml www.example.com" start="1683471957" startstr="Sun May  7 20:05:57 2023" version="7.80" xmloutputversion="1.04">
+<scaninfo type="syn" protocol="tcp" numservices="100" services="7,9,13,21-23,25-26,37,53,79-81,88,106,110-111,113,119,135,139,143-144,179,199,389,427,443-445,465,513-515,543-544,548,554,587,631,646,873,990,993,995,1025-1029,1110,1433,1720,1723,1755,1900,2000-2001,2049,2121,2717,3000,3128,3306,3389,3986,4899,5000,5009,5051,5060,5101,5190,5357,5432,5631,5666,5800,5900,6000-6001,6646,7070,8000,8008-8009,8080-8081,8443,8888,9100,9999-10000,32768,49152-49157"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1683471958" endtime="1683471988"><status state="up" reason="echo-reply" reason_ttl="49"/>
+<address addr="93.184.216.34" addrtype="ipv4"/>
+<hostnames>
+<hostname name="www.example.com" type="user"/>
+</hostnames>
+<ports><extraports state="filtered" count="98">
+<extrareasons reason="no-responses" count="98"/>
+</extraports>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="48"/><service name="http" product="Edgecast CDN httpd" extrainfo="bsa/EB18" method="probed" conf="10"/></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="48"/><service name="http" product="Edgecast CDN httpd" extrainfo="bsa/EB18" tunnel="ssl" method="probed" conf="10"/></port>
+</ports>
+<os><portused state="open" proto="tcp" portid="80"/>
+<osmatch name="Linux 2.6.18 - 2.6.22" accuracy="86" line="49721">
+<osclass type="general purpose" vendor="Linux" osfamily="Linux" osgen="2.6.X" accuracy="86"><cpe>cpe:/o:linux:linux_kernel:2.6</cpe></osclass>
+</osmatch>
+<osmatch name="Android 5.0.1" accuracy="85" line="31174">
+<osclass type="phone" vendor="Google" osfamily="Android" osgen="5.X" accuracy="85"><cpe>cpe:/o:google:android:5.0.1</cpe></osclass>
+</osmatch>
+</os>
+<uptime seconds="11" lastboot="Sun May  7 20:06:17 2023"/>
+<distance value="16"/>
+<tcpsequence index="259" difficulty="Good luck!" values="AE16C586,BDBFC514,FF610734,DC052A08,16D6D39B,AD5F4A87"/>
+<ipidsequence class="All zeros" values="0,0,0,0,0,0"/>
+<tcptssequence class="other" values="F07889E9,9F41FC9C,60B18BC9,D332839A,4C7025BD,9F41FE30"/>
+<trace port="443" proto="tcp">
+<hop ttl="1" ipaddr="192.168.1.1" rtt="6.16" host="_gateway"/>
+<hop ttl="2" ipaddr="202.163.100.245" rtt="6.70"/>
+<hop ttl="3" ipaddr="192.168.200.101" rtt="13.22"/>
+<hop ttl="4" ipaddr="192.168.200.9" rtt="7.54"/>
+<hop ttl="5" ipaddr="192.168.200.6" rtt="28.99"/>
+<hop ttl="7" ipaddr="10.253.4.50" rtt="7.75"/>
+<hop ttl="8" ipaddr="10.253.4.4" rtt="7.78"/>
+<hop ttl="10" ipaddr="154.54.72.225" rtt="112.59" host="be2780.ccr42.par01.atlas.cogentco.com"/>
+<hop ttl="11" ipaddr="154.54.72.109" rtt="119.26" host="be2779.ccr41.par01.atlas.cogentco.com"/>
+<hop ttl="12" ipaddr="130.117.50.245" rtt="140.68" host="be2286.ccr41.lon13.atlas.cogentco.com"/>
+<hop ttl="13" ipaddr="154.54.82.34" rtt="188.87" host="be2099.ccr31.bos01.atlas.cogentco.com"/>
+<hop ttl="14" ipaddr="38.88.15.34" rtt="185.50"/>
+<hop ttl="15" ipaddr="152.195.233.129" rtt="246.84" host="ae-66.core1.bsa.edgecastcdn.net"/>
+<hop ttl="16" ipaddr="93.184.216.34" rtt="241.20"/>
+</trace>
+<times srtt="244754" rttvar="5105" to="265174"/>
+</host>
+<runstats><finished time="1683471988" timestr="Sun May  7 20:06:28 2023" elapsed="32.32" summary="Nmap done at Sun May  7 20:06:28 2023; 1 IP address (1 host up) scanned in 32.32 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

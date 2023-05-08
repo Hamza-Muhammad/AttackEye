@@ -127,7 +127,7 @@ function deletedomain(btn) {
   toolOverlay.querySelectorAll("button")[0].onclick = () => {
     axios
       .post(
-        "/api/deletedomain",
+        "/api/deleteport",
         {
           domain: dm,
         },
@@ -202,7 +202,7 @@ function populateOverallOverview(domain) {
         row.removeAttribute("style");
         var btnCont = document.createElement("td"),
           button1 = document.createElement("BUTTON"),
-          text1 = document.createTextNode("View Graph");
+          text1 = document.createTextNode("View Report");
         // btnCont.setAttribute('align', 'right');
         btnCont.setAttribute("style", "padding-right: 0;");
         button1.appendChild(text1);
@@ -266,15 +266,15 @@ function populateOverallOverview(domain) {
     });
   };
   if (!domain) {
-    return axios.get("/portscan/graphtables").then(axiosCall);
+    return axios.get("/api/porttable").then(axiosCall);
   }
   var checkDomainStatus = setInterval(function () {
-    axios.get("/portscan/graphtables").then(axiosCall);
+    axios.get("/api/porttable").then(axiosCall);
   }, 2000);
 }
 
 function viewgraph(btn) {
   var dm = btn.id;
   window.localStorage.setItem("graphname", dm);
-  window.location.href = "/surface/" + dm;
+  window.location.href = "/api/portinfo/" + dm + '/' + dm;
 }

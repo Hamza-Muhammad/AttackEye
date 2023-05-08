@@ -4,11 +4,9 @@ from .nmap import parse_nmap_xml_report, generate_xml_report
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from nmap.models import port_scan
-# from celery import Celery
-import tldextract
 import validators
 import requests
-
+from ..core.tasks import celery_generate_xml_report
 
 @api_view(["GET"])
 def nmap_report(request, value):
@@ -37,11 +35,6 @@ def portscan(request):
     elif request.method == "POST":
         domain = request.data["domain"]
 
-        # extSubdomain = tldextract.extract(domain).subdomain
-        # extDomain = (
-        #     tldextract.extract(domain).domain + "." + tldextract.extract(domain).suffix
-        # )
-
         isValidDomain = validators.domain(domain)
 
         try:
@@ -53,15 +46,6 @@ def portscan(request):
             domainStatusCode = 0
 
         print(domainStatusCode)
-        # if extSubdomain != "":
-        #     return Response(
-        #         {
-        #             "message": "Subdomains are not allowed",
-        #             "domain": domain,
-        #             "messageDescription": f"A subdomain cannot be scanned. You can only proceed with scanning the organization domain ({domain})",
-        #             "error": 405,
-        #         }
-        #     )
         if isValidDomain and (
             (
                 domainStatusCode == 200
@@ -104,7 +88,6 @@ def portscan(request):
                 domainbyuser.delete()
             # if domain exists for the current user
             elif domainfromdb and len(domainbyuser) == 0:
-                print('running 1')
                 timeDateEnd = domainfromdb.values("timeDateEnd")[0]["timeDateEnd"]
                 timeDateStart = domainfromdb.values("timeDateStart")[0]["timeDateStart"]
                 port_scan.objects.create(UserId=user, domain=domain, pending=1)
@@ -115,8 +98,7 @@ def portscan(request):
 
             attackeye = port_scan.objects.create(UserId=user, domain=domain, pending=0)
 
-            # amass.delay(str(extDomain), str(user))
-            print('running 2')
+            celery_generate_xml_report.delay(str(domain), str(user))
             return Response({"response": request.data})
         else:
             print("empty")
@@ -130,16 +112,22 @@ def portscan(request):
                 }
             )
         
+@api_view(["POST", "DELETE"])
+def deleteport(request):
+    if request.method == "POST":
+        domain = request.data["domain"]
+        user = request.session["_auth_user_id"]
+        graphold = port_scan.objects.filter(id=domain)
+        graphold.delete()
+        return Response({"received data": request.data})
+
 @api_view(["GET"])
-def graph_table(request):
-    print('i am running')
+def porttable(request):
     if request.method == "GET":
-        print('hello')
         if request.user.is_authenticated:
             user = request.session["_auth_user_id"]
             graph_list = []
             graph = port_scan.objects.filter(UserId=user).values()
-            print(graph)
             return Response({"graph": graph})
     else:
         Response({"failed": "true"})
@@ -153,6 +141,8 @@ def port_info(request, value1, value2):
 @api_view(["POST"])
 def generate_nmap_xml_report(request):
     if request.method == "POST":
-        domain = request.data["domain"]
-        generate_xml_report(domain)
-        return Response()
+        if request.user.is_authenticated:
+            user = request.session["_auth_user_id"]
+            domain = request.data["domain"]
+            celery_generate_xml_report.delay(str(domain), str(user))
+            return Response()

@@ -9,6 +9,7 @@ import subprocess
 
 ######################################################################################
 from core.models import scan
+from nmap.models import port_scan
 from django.conf import settings
 import datetime
 
@@ -25,3 +26,11 @@ def amass(y,user):
     subprocess.call(['bash',f'{settings.SITE_ROOT}/attack_eye/apps/amass/scripts/search.sh',y])
     print(f"Execution of {y} has COMPLETED")
     scan.objects.filter(UserId=user,domain=y).update(pending=1, timeDateEnd=datetime.datetime.now())
+
+@shared_task
+def celery_generate_xml_report(host_name, user):
+    print(f"Port scanning of {host_name} has STARTED")
+    subprocess.call(
+        f"nmap -T5 -sS -sV -O --privilege --min-hostgroup 128 --top-ports 100 --traceroute --min-parallelism 100 {host_name} -oX {settings.SITE_ROOT}/attack_eye/apps/nmap/port_scanning_reports/{host_name}.xml", shell=True,)
+    print(f"Port scanning of {host_name} has COMPLETED")
+    port_scan.objects.filter(UserId=user,domain=host_name).update(pending=1, timeDateEnd=datetime.datetime.now())
