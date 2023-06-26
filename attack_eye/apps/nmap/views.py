@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from nmap.models import port_scan
 import validators
 import requests
-from ..core.tasks import celery_generate_xml_report
+from ..Celery.tasks import celery_generate_xml_report
 
 @api_view(["GET"])
 def nmap_report(request, value):
